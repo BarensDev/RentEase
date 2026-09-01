@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Regista um novo apartamento no RentEase.">
+  <title>RentEase — Novo apartamento</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/storage.js" defer></script>
+  <script src="js/new-flat.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav container">
+      <a class="brand" href="index.html">
+        <span class="brand__mark">R</span>
+        <span>RentEase</span>
+      </a>
+
+      <div class="nav__links">
+        <a href="index.html">Resumo</a>
+        <a href="flats.html">Apartamentos</a>
+        <a class="button button--small current-page" href="new-flat.html">Novo apartamento</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page-title">
+      <div class="container">
+        <p class="eyebrow">Novo registo</p>
+        <h1>Adicionar apartamento</h1>
+        <p>A validação já está preparada. Completa o fluxo que guarda os dados válidos.</p>
+      </div>
+    </section>
+
+    <section class="container content-section">
+      <form id="newFlatForm" class="form-card" novalidate>
+        <div class="section-heading">
+          <p class="eyebrow">Detalhes do imóvel</p>
+          <h2>Informação do apartamento</h2>
+        </div>
+
+        <p>Os campos assinalados com * são obrigatórios.</p>
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="city">Cidade *</label>
+            <input id="city" name="city" type="text" required>
+            <p id="cityError" class="field-error"></p>
+          </div>
+
+          <div class="field field--wide">
+            <!-- TODO HTML-7: acrescenta um label associado a streetName. -->
+            <input id="streetName" name="streetName" type="text" placeholder="Nome da rua" required>
+            <p id="streetNameError" class="field-error"></p>
+          </div>
+
+          <div class="field">
+            <!-- TODO HTML-8: acrescenta um label associado a streetNumber. -->
+            <input id="streetNumber" name="streetNumber" type="number" min="1" step="1" placeholder="Número da porta" required>
+            <p id="streetNumberError" class="field-error"></p>
+          </div>
+
+          <div class="field">
+            <!-- TODO HTML-9: acrescenta um label associado a areaSize. -->
+            <input id="areaSize" name="areaSize" type="number" min="0" step="0.1" placeholder="Área em m²" required>
+            <p id="areaSizeError" class="field-error"></p>
+          </div>
+
+          <div class="field">
+            <!-- TODO HTML-10: acrescenta um label associado a yearBuilt. -->
+            <input id="yearBuilt" name="yearBuilt" type="number" min="1900" step="1" placeholder="Ano de construção" required>
+            <small>Entre 1900 e o ano actual.</small>
+            <p id="yearBuiltError" class="field-error"></p>
+          </div>
+
+          <div class="field">
+            <!-- TODO HTML-11: acrescenta um label associado a rentPrice. -->
+            <input id="rentPrice" name="rentPrice" type="number" min="0" step="0.01" placeholder="Renda mensal" required>
+            <p id="rentPriceError" class="field-error"></p>
+          </div>
+
+          <div class="field">
+            <!-- TODO HTML-12: acrescenta um label associado a dateAvailable. -->
+            <input id="dateAvailable" name="dateAvailable" type="date" required>
+            <p id="dateAvailableError" class="field-error"></p>
+          </div>
+
+          <div class="field checkbox-field field--wide">
+            <input id="hasAC" name="hasAC" type="checkbox">
+            <label for="hasAC">O apartamento tem ar condicionado</label>
+          </div>
+        </div>
+
+        <div id="formFeedback" class="feedback" hidden>
+          <span id="formFeedbackText"></span>
+          <a id="viewFlatsLink" href="flats.html" hidden>Ver apartamentos</a>
+        </div>
+
+        <div class="form-actions">
+          <button class="button" type="submit">Guardar apartamento</button>
+          <a class="button button--secondary" href="flats.html">Cancelar</a>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <!-- TODO HTML-13: acrescenta um footer consistente com as restantes páginas. -->
+</body>
+</html>

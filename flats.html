@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Lista, filtra e ordena os apartamentos guardados no RentEase.">
+  <title>RentEase — Apartamentos</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/storage.js" defer></script>
+  <script src="js/flats.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav container">
+      <a class="brand" href="index.html">
+        <span class="brand__mark">R</span>
+        <span>RentEase</span>
+      </a>
+
+      <div class="nav__links">
+        <a href="index.html">Resumo</a>
+        <a class="current-page" href="flats.html">Apartamentos</a>
+        <a class="button button--small" href="new-flat.html">Novo apartamento</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page-title">
+      <div class="container">
+        <p class="eyebrow">Pesquisa e comparação</p>
+        <h1>Todos os apartamentos</h1>
+        <p>Combina filtros e ordenação sem alterar os dados guardados.</p>
+      </div>
+    </section>
+
+    <section class="container content-section">
+      <form id="filtersForm" class="filters-panel">
+        <div class="section-heading">
+          <p class="eyebrow">Refinar resultados</p>
+          <h2>Filtros e ordenação</h2>
+        </div>
+
+        <div class="filters-grid">
+          <div class="field field--wide">
+            <label for="cityFilter">Cidade</label>
+            <input id="cityFilter" name="city" type="search" placeholder="Ex.: Porto">
+          </div>
+
+          <div class="field">
+            <!-- TODO HTML-2: acrescenta um label associado a minPriceFilter. -->
+            <input id="minPriceFilter" name="minPrice" type="number" min="0" step="0.01" placeholder="Preço mínimo">
+          </div>
+
+          <div class="field">
+            <!-- TODO HTML-3: acrescenta um label associado a maxPriceFilter. -->
+            <input id="maxPriceFilter" name="maxPrice" type="number" min="0" step="0.01" placeholder="Preço máximo">
+          </div>
+
+          <div class="field">
+            <!-- TODO HTML-4: acrescenta um label associado a minAreaFilter. -->
+            <input id="minAreaFilter" name="minArea" type="number" min="0" step="0.1" placeholder="Área mínima">
+          </div>
+
+          <div class="field">
+            <!-- TODO HTML-5: acrescenta um label associado a maxAreaFilter. -->
+            <input id="maxAreaFilter" name="maxArea" type="number" min="0" step="0.1" placeholder="Área máxima">
+          </div>
+
+          <div class="field">
+            <label for="sortBy">Ordenar por</label>
+            <select id="sortBy" name="sortBy">
+              <option value="none">Ordem de criação</option>
+              <option value="city">Cidade</option>
+              <option value="price">Preço</option>
+              <option value="area">Área</option>
+            </select>
+          </div>
+        </div>
+
+        <button id="clearFiltersButton" class="button button--secondary" type="reset">Limpar filtros</button>
+      </form>
+    </section>
+
+    <section class="container content-section">
+      <div class="section-heading section-heading--actions">
+        <div>
+          <p class="eyebrow">Resultados</p>
+          <h2>Apartamentos encontrados</h2>
+        </div>
+        <output id="resultsCount">0 resultados</output>
+      </div>
+
+      <div id="flatsFeedback" class="feedback" hidden></div>
+      <div id="flatList" class="property-grid"></div>
+    </section>
+  </main>
+
+  <!-- TODO HTML-6: acrescenta um footer consistente com index.html. -->
+</body>
+</html>
