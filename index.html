@@ -1,75 +1,95 @@
 <!doctype html>
 <html lang="pt-PT">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Resumo e apartamentos favoritos guardados no RentEase.">
-  <title>RentEase — Resumo</title>
-  <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="css/styles.css">
-  <script src="js/storage.js" defer></script>
-  <script src="js/home.js" defer></script>
-</head>
-<body>
-  <header class="site-header">
-    <nav class="nav container">
-      <a class="brand" href="index.html">
-        <span class="brand__mark">R</span>
-        <span>RentEase</span>
-      </a>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Resumo e apartamentos favoritos guardados no RentEase."
+    />
+    <title>RentEase — Resumo</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="css/styles.css" />
+    <script src="js/storage.js" defer></script>
+    <script src="js/home.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav container">
+        <a class="brand" href="index.html">
+          <span class="brand__mark">R</span>
+          <span>RentEase</span>
+        </a>
 
-      <div class="nav__links">
-        <a class="current-page" href="index.html">Resumo</a>
-        <a href="flats.html">Apartamentos</a>
-        <a class="button button--small" href="new-flat.html">Novo apartamento</a>
-      </div>
-    </nav>
-  </header>
-
-  <main>
-    <section class="page-hero">
-      <div class="container">
-        <p class="eyebrow">Comparador local de apartamentos</p>
-        <h1>Compara opções de arrendamento.</h1>
-        <p>Regista apartamentos, compara características e guarda os favoritos no browser.</p>
-
-        <div class="hero-actions">
-          <a class="button" href="new-flat.html">Adicionar apartamento</a>
-          <a class="button button--secondary" href="flats.html">Comparar todos</a>
+        <div class="nav__links">
+          <a class="current-page" href="index.html">Resumo</a>
+          <a href="flats.html">Apartamentos</a>
+          <a class="button button--small" href="new-flat.html"
+            >Novo apartamento</a
+          >
         </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <div class="container">
+          <p class="eyebrow">Comparador local de apartamentos</p>
+          <h1>Compara opções de arrendamento.</h1>
+          <p>
+            Regista apartamentos, compara características e guarda os favoritos
+            no browser.
+          </p>
+
+          <div class="hero-actions">
+            <a class="button" href="new-flat.html">Adicionar apartamento</a>
+            <a class="button button--secondary" href="flats.html"
+              >Comparar todos</a
+            >
+          </div>
+        </div>
+      </section>
+
+      <section class="container summary-section">
+        <div class="section-heading">
+          <p class="eyebrow">Visão geral</p>
+          <h2>Resumo da pesquisa</h2>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card">
+            <span class="stat-card__label">Apartamentos registados</span>
+            <strong class="stat-card__value" id="totalFlatsCount">0</strong>
+          </article>
+
+          <article class="stat-card">
+            <span class="stat-card__label">Favoritos</span>
+            <strong class="stat-card__value" id="favouriteFlatsCount">0</strong>
+          </article>
+        </div>
+      </section>
+
+      <section class="container content-section">
+        <div class="section-heading">
+          <p class="eyebrow">Selecção pessoal</p>
+          <h2>Apartamentos favoritos</h2>
+        </div>
+
+        <div id="homeFeedback" class="feedback" hidden></div>
+        <div id="favouriteList" class="property-grid"></div>
+      </section>
+    </main>
+    <!-- DONE TODO HTML-1: acrescenta um footer com o nome do projecto e as tecnologias utilizadas.  -->
+    <footer class="site-footer">
+      <div class="footer-container">
+        <div class="">
+          <p>
+            <strong>RentEase</strong> &bull; projecto educativo com dados
+            ficticios
+          </p>
+        </div>
+        <div class=""><p>HTML &bull; CSS &bull; JavaScript puro</p></div>
       </div>
-    </section>
-
-    <section class="container summary-section">
-      <div class="section-heading">
-        <p class="eyebrow">Visão geral</p>
-        <h2>Resumo da pesquisa</h2>
-      </div>
-
-      <div class="stats-grid">
-        <article class="stat-card">
-          <span class="stat-card__label">Apartamentos registados</span>
-          <strong class="stat-card__value" id="totalFlatsCount">0</strong>
-        </article>
-
-        <article class="stat-card">
-          <span class="stat-card__label">Favoritos</span>
-          <strong class="stat-card__value" id="favouriteFlatsCount">0</strong>
-        </article>
-      </div>
-    </section>
-
-    <section class="container content-section">
-      <div class="section-heading">
-        <p class="eyebrow">Selecção pessoal</p>
-        <h2>Apartamentos favoritos</h2>
-      </div>
-
-      <div id="homeFeedback" class="feedback" hidden></div>
-      <div id="favouriteList" class="property-grid"></div>
-    </section>
-  </main>
-
-  <!-- TODO HTML-1: acrescenta um footer com o nome do projecto e as tecnologias utilizadas. -->
-</body>
+    </footer>
+  </body>
 </html>

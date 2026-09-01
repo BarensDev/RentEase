@@ -355,8 +355,24 @@ h3 {
   font-weight: 900;
 }
 
-/* TODO CSS-5: estiliza o footer que acrescentaste às três páginas. */
+/* DONE TODO CSS-5: estiliza o footer que acrescentaste às três páginas. */
 .site-footer {
+  height: 5rem;
+  color: #e0f2fe;
+  background-color: #172033;
+  align-content: center;
+}
+.footer-container {
+  display: grid;
+  margin: 0 5rem;
+  grid-template-columns: auto auto;
+  justify-content: space-between;
+  /*text-align: center;*/
+}
+
+.footer-container div {
+  max-width: 30rem;
+  justify-self: space-between;
 }
 
 /* TODO CSS-6: acrescenta regras específicas para ecrãs até 700px. */
