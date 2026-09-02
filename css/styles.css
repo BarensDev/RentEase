@@ -216,9 +216,27 @@ h3 {
   gap: 1rem;
 }
 
+/*flats grid filters + header*/
+#filtersForm {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+}
+button#clearFiltersButton {
+  grid-area: 1 / 2 / 2 / 3;
+  height: 1.5em;
+  align-self: center;
+}
+.filters-grid {
+  grid-area: 2 / 1 / 3 / 3;
+}
+
 /* TODO CSS-1: apresenta .stats-grid e .property-grid com CSS Grid. */
 .stats-grid,
 .property-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
 }
 
 .stat-card,
@@ -245,12 +263,22 @@ h3 {
 }
 
 /* TODO CSS-2: cria grelhas para os campos de filtros e do formulário. */
-.filters-grid,
+.filters-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
 .form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(6, auto);
+  gap: 1rem;
 }
 
 /* TODO CSS-3: faz os campos .field--wide ocuparem a largura necessária na grelha. */
 .field--wide {
+  grid-column: span 2;
 }
 
 .field {
