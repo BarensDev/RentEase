@@ -26,6 +26,10 @@ body {
   line-height: 1.5;
 }
 
+.required {
+  color: red;
+}
+
 a {
   color: var(--color-primary-dark);
 }

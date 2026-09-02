@@ -50,17 +50,23 @@
             <h2>Informação do apartamento</h2>
           </div>
 
-          <p>Os campos assinalados com * são obrigatórios.</p>
+          <p>
+            Os campos assinalados com <span class="required">*</span> são
+            obrigatórios.
+          </p>
 
           <div class="form-grid">
             <div class="field">
-              <label for="city">Cidade *</label>
+              <label for="city">Cidade <span class="required">*</span></label>
               <input id="city" name="city" type="text" required />
               <p id="cityError" class="field-error"></p>
             </div>
 
             <div class="field field--wide">
-              <!-- TODO HTML-7: acrescenta um label associado a streetName. -->
+              <!-- DONE TODO HTML-7: acrescenta um label associado a streetName. -->
+              <label for="streetName"
+                >Nome da rua <span class="required">*</span></label
+              >
               <input
                 id="streetName"
                 name="streetName"
@@ -72,7 +78,10 @@
             </div>
 
             <div class="field">
-              <!-- TODO HTML-8: acrescenta um label associado a streetNumber. -->
+              <!-- DONE TODO HTML-8: acrescenta um label associado a streetNumber. -->
+              <label for="streetNumber"
+                >Número da porta <span class="required">*</span></label
+              >
               <input
                 id="streetNumber"
                 name="streetNumber"
@@ -86,7 +95,10 @@
             </div>
 
             <div class="field">
-              <!-- TODO HTML-9: acrescenta um label associado a areaSize. -->
+              <!-- DONE TODO HTML-9: acrescenta um label associado a areaSize. -->
+              <label for="areaSize"
+                >Área(m&sup2;) <span class="required">*</span></label
+              >
               <input
                 id="areaSize"
                 name="areaSize"
@@ -100,7 +112,10 @@
             </div>
 
             <div class="field">
-              <!-- TODO HTML-10: acrescenta um label associado a yearBuilt. -->
+              <!-- DONE TODO HTML-10: acrescenta um label associado a yearBuilt. -->
+              <label for="yearBuilt"
+                >Ano de construção <span class="required">*</span></label
+              >
               <input
                 id="yearBuilt"
                 name="yearBuilt"
@@ -115,7 +130,10 @@
             </div>
 
             <div class="field">
-              <!-- TODO HTML-11: acrescenta um label associado a rentPrice. -->
+              <!-- DONE TODO HTML-11: acrescenta um label associado a rentPrice. -->
+              <label for="rentPrice"
+                >Renda mensal (&euro;) <span class="required">*</span></label
+              >
               <input
                 id="rentPrice"
                 name="rentPrice"
@@ -129,7 +147,10 @@
             </div>
 
             <div class="field">
-              <!-- TODO HTML-12: acrescenta um label associado a dateAvailable. -->
+              <!-- DONE TODO HTML-12: acrescenta um label associado a dateAvailable. -->
+              <label for="dateAvailable"
+                >Data de disponibilidade <span class="required">*</span></label
+              >
               <input
                 id="dateAvailable"
                 name="dateAvailable"
