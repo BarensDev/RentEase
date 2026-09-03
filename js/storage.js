@@ -2,32 +2,39 @@
 
 const STORAGE_KEY = "renteaseFlats";
 let storageMessage = "";
+/*const STORAGE_TEST_VALUE =
+  '{"data":[{"city":"Olhão","streetName":"Rua da Igreja","streetNumber":2,"areaSize":100,"hasAC":false,"yearBuilt":1920,"rentPrice":900,"dateAvailable":"2026-10-01","isFavorite":false,"id":1788391492486}],"errors":{}}';
+
+console.log(STORAGE_TEST_VALUE);*/
 
 function loadFlats() {
   storageMessage = "";
+  try {
+    const flatsStored = localStorage.getItem(STORAGE_KEY);
 
-  /*
-   * TODO JS-STORAGE-1
-   * 1. Lê STORAGE_KEY com localStorage.getItem().
-   * 2. Se a chave não existir, devolve [].
-   * 3. Converte a string com JSON.parse().
-   * 4. Confirma que o resultado é um array.
-   * 5. Se ocorrer um erro, define storageMessage e devolve [].
-   */
-
-  return [];
+    if (flatsStored) {
+      let flats = JSON.parse(flatsStored);
+      //console.log(flats);
+      //console.log(flatsStored);
+      return flats;
+    } else {
+      storageMessage = "Something went wrong while loading the flats data...\n";
+    }
+  } catch (error) {
+    throw new Error(error);
+  }
+  return { data: [{}], errors: {} };
 }
 
 function saveFlats(flats) {
-  /*
-   * TODO JS-STORAGE-2
-   * 1. Converte o array com JSON.stringify().
-   * 2. Guarda a string com localStorage.setItem().
-   * 3. Devolve true quando a gravação termina.
-   * 4. Se ocorrer um erro, define storageMessage e devolve false.
-   */
-
-  storageMessage = "Completa saveFlats() para guardar o array no browser.";
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(flats));
+    return true;
+    storageMessage = "Flat guardado corretamente!";
+  } catch (error) {
+    storageMessage = "Erro ao guardar... Tente Novamente mais tarde...";
+    throw new Error("Erro ao guardar... Tente Novamente mais tarde..." + error);
+  }
   return false;
 }
 
