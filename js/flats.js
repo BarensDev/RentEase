@@ -32,11 +32,17 @@ function getProcessedFlats() {
   const maxArea = readOptionalNumber(maxAreaFilter);
 
   if (minPrice !== null && maxPrice !== null && minPrice > maxPrice) {
-    return { flats: [], error: "O preço mínimo não pode ser superior ao preço máximo." };
+    return {
+      flats: [],
+      error: "O preço mínimo não pode ser superior ao preço máximo.",
+    };
   }
 
   if (minArea !== null && maxArea !== null && minArea > maxArea) {
-    return { flats: [], error: "A área mínima não pode ser superior à área máxima." };
+    return {
+      flats: [],
+      error: "A área mínima não pode ser superior à área máxima.",
+    };
   }
 
   /*
@@ -46,7 +52,7 @@ function getProcessedFlats() {
    * Os cinco filtros devem funcionar em conjunto.
    * As variáveis city, minPrice, maxPrice, minArea e maxArea já estão preparadas.
    */
-  const filteredFlats = allFlats;
+  const filteredFlats = allFlats.data;
 
   // Esta cópia evita ordenar directamente o array carregado.
   const sortedFlats = [...filteredFlats];
@@ -169,7 +175,10 @@ function toggleFavourite(flatId) {
    * 4. Volta a renderizar.
    */
 
-  showFlatsFeedback(`Falta implementar a alteração do favorito ${flatId}.`, "warning");
+  showFlatsFeedback(
+    `Falta implementar a alteração do favorito ${flatId}.`,
+    "warning",
+  );
 }
 
 function deleteFlat(flatId) {
@@ -181,7 +190,10 @@ function deleteFlat(flatId) {
    * 4. Volta a renderizar.
    */
 
-  showFlatsFeedback(`Falta implementar a eliminação do apartamento ${flatId}.`, "warning");
+  showFlatsFeedback(
+    `Falta implementar a eliminação do apartamento ${flatId}.`,
+    "warning",
+  );
 }
 
 filtersForm.addEventListener("input", () => renderFlats());
