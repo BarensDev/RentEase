@@ -4,8 +4,7 @@ const STORAGE_KEY = "renteaseFlats";
 let storageMessage = "";
 /*const STORAGE_TEST_VALUE =
   '{"data":[{"city":"Olhão","streetName":"Rua da Igreja","streetNumber":2,"areaSize":100,"hasAC":false,"yearBuilt":1920,"rentPrice":900,"dateAvailable":"2026-10-01","isFavorite":false,"id":1788391492486}],"errors":{}}';
-
-console.log(STORAGE_TEST_VALUE);*/
+*/
 
 function loadFlats() {
   storageMessage = "";
@@ -13,9 +12,7 @@ function loadFlats() {
     const flatsStored = localStorage.getItem(STORAGE_KEY);
 
     if (flatsStored) {
-      let flats = JSON.parse(flatsStored);
-      //console.log(flats);
-      //console.log(flatsStored);
+      const flats = JSON.parse(flatsStored);
       return flats;
     } else {
       storageMessage = "Something went wrong while loading the flats data...\n";

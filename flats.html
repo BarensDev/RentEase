@@ -119,6 +119,13 @@
                 <option value="area">Área</option>
               </select>
             </div>
+            <div class="field">
+              <label for="sortDirection">Direcção</label>
+              <select id="sortDirection" name="sortDirection">
+                <option value="asc">Ascendente</option>
+                <option value="dec">Decresente</option>
+              </select>
+            </div>
           </div>
 
           <button
@@ -143,6 +150,26 @@
         <div id="flatsFeedback" class="feedback" hidden></div>
         <div id="flatList" class="property-grid"></div>
       </section>
+
+      <div id="delete-modal" class="modal hidden">
+        <div class="modal-content">
+          <h3>Delete flat?</h3>
+          <p>Are you sure you want to delete this flat?</p>
+
+          <button
+            id="cancel-delete"
+            class="button button--secondary button--small"
+          >
+            Cancel
+          </button>
+          <button
+            id="confirm-delete"
+            class="button button--danger button--small"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
     </main>
 
     <!-- DONE TODO HTML-6: acrescenta um footer consistente com index.html. -->

@@ -63,10 +63,9 @@ function createFavouriteCard(flat) {
 function renderHome(actionMessage = "") {
   const flats = loadFlats();
 
-  totalFlatsCount.textContent = flats.length;
+  totalFlatsCount.textContent = flats.data.length;
 
-  // TODO JS-HOME-2: usa filter() para obter apenas os favoritos.
-  const favouriteFlats = [];
+  const favouriteFlats = flats.data.filter((flat) => flat.isFavorite);
 
   favouriteFlatsCount.textContent = favouriteFlats.length;
   favouriteList.replaceChildren();
@@ -93,7 +92,10 @@ function removeFavourite(flatId) {
    * 4. Volta a chamar renderHome() com uma mensagem de sucesso.
    */
 
-  showHomeFeedback(`Falta implementar a remoção do favorito ${flatId}.`, "warning");
+  showHomeFeedback(
+    `Falta implementar a remoção do favorito ${flatId}.`,
+    "warning",
+  );
 }
 
 renderHome();
