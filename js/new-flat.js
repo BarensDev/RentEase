@@ -1,5 +1,9 @@
 "use strict";
 
+const params = new URLSearchParams(window.location.search);
+const id = Number(params.get("id"));
+
+const pageTitle = document.getElementById("page-title");
 const newFlatForm = document.getElementById("newFlatForm");
 const yearBuiltInput = document.getElementById("yearBuilt");
 const formFeedback = document.getElementById("formFeedback");
@@ -8,6 +12,7 @@ const viewFlatsLink = document.getElementById("viewFlatsLink");
 const currentYear = new Date().getFullYear();
 
 yearBuiltInput.max = currentYear;
+id ? pageTitle.classList.add("hidden") : pageTitle.classList.remove("hidden");
 
 function showFormFeedback(message, type = "success", showLink = false) {
   formFeedback.hidden = message === "";
@@ -45,11 +50,6 @@ function isValidDateText(dateText) {
   );
 }
 
-/*
- * VALIDAÇÃO FORNECIDA
- * Esta função já lê e valida todos os campos.
- * Não precisas de a reescrever. Usa o objecto devolvido no evento submit.
- */
 function validateForm() {
   const city = newFlatForm.elements.city.value.trim();
   const streetName = newFlatForm.elements.streetName.value.trim();
@@ -150,7 +150,7 @@ newFlatForm.addEventListener("submit", (event) => {
 
   const validationResult = validateForm();
   showValidationErrors(validationResult.errors);
-
+  //console.log(validationResult);
   const hasErrors = Object.values(validationResult.errors).some(
     (message) => message !== "",
   );
@@ -163,28 +163,41 @@ newFlatForm.addEventListener("submit", (event) => {
     return;
   }
 
-  /*
-   * TODO JS-NEW-1
-   * 1. Carrega o array com loadFlats().
-   * 2. Cria newFlat com Date.now(), validationResult.data e isFavourite: false.
-   * 3. Adiciona newFlat ao array.
-   * 4. Chama saveFlats(flats).
-   * 5. Só se saveFlats devolver true: limpa o formulário, limpa os erros
-   *    e apresenta a mensagem de sucesso com o link para flats.html.
-   */
   let oldFlats = loadFlats();
-  let newFlat = {
-    ...validationResult.data,
-    isFavorite: false,
-    id: Date.now(),
-  };
+  let editedFlats = [];
+  if (id) {
+    editedFlats = oldFlats.data.map((flat) => {
+      if (flat.id === id) {
+        return (flat = {
+          ...validationResult.data,
+          isFavorite: flat.isFavorite,
+          id: id,
+        });
+      }
+      return flat;
+    });
+  } else {
+    let newFlat = {
+      ...validationResult.data,
+      isFavorite: false,
+      id: Date.now(),
+    };
+  }
+
+  const flatsContent = id ? [...editedFlats] : [...oldFlats.data, newFlat];
   const flats = {
-    data: [...oldFlats.data, newFlat],
+    data: [...flatsContent],
     errors: { ...oldFlats.errors },
   };
+
   const isSaved = saveFlats(flats);
+
   if (isSaved) {
     clearForm;
+    if (id) {
+      window.location.href = "./flats.html";
+      return;
+    }
     showFormFeedback(
       "Os dados são válidos. Completa o TODO JS-NEW-1 para guardar o apartamento.",
       "success",
@@ -197,7 +210,25 @@ newFlatForm.addEventListener("submit", (event) => {
   }
 });
 
-loadFlats();
+function renderNewFlat() {
+  if (id) {
+    const allFlats = loadFlats();
+    const flats = [...allFlats.data];
+    console.log(flats);
+
+    const flatFiltered = flats.filter((flat) => flat.id == id);
+    let flat = flatFiltered[0];
+    console.log(flat);
+    document.getElementById("city").value = flat.city;
+    document.getElementById("streetName").value = flat.streetName;
+    document.getElementById("streetNumber").value = flat.streetNumber;
+    document.getElementById("areaSize").value = flat.areaSize;
+    document.getElementById("yearBuilt").value = flat.yearBuilt;
+    document.getElementById("rentPrice").value = flat.rentPrice;
+    document.getElementById("dateAvailable").value = flat.dateAvailable;
+    document.getElementById("hasAC").checked = flat.hasAC;
+  }
+}
 
 if (getStorageMessage()) {
   showFormFeedback(getStorageMessage(), "warning");
@@ -212,3 +243,4 @@ function clearForm() {
   document.getElementById("rentPrice").value = "";
   newFlatForm.elements.dateAvailable.value = "";
 }
+renderNewFlat();

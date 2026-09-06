@@ -32,9 +32,9 @@
     </header>
 
     <main>
-      <section class="page-title">
+      <section id="page-title" class="page-title">
         <div class="container">
-          <p class="eyebrow">Novo registo</p>
+          <p class="eyebrow" style="color: white">Novo registo</p>
           <h1>Adicionar apartamento</h1>
           <p>
             A validação já está preparada. Completa o fluxo que guarda os dados
@@ -147,7 +147,6 @@
             </div>
 
             <div class="field">
-              <!-- DONE TODO HTML-12: acrescenta um label associado a dateAvailable. -->
               <label for="dateAvailable"
                 >Data de disponibilidade <span class="required">*</span></label
               >
@@ -176,6 +175,26 @@
             <a class="button button--secondary" href="flats.html">Cancelar</a>
           </div>
         </form>
+
+        <aside class="form-card">
+          <div class="section-heading">
+            <p class="eyebrow">Antes de guardar</p>
+            <h2>Confirma estes pontos</h2>
+          </div>
+
+          <ul class="aside-list">
+            <li>A cidade e a rua têm pelo menos 2 caracteres.</li>
+            <li>Os valores númericos são positivos.</li>
+            <li>O ano está entre 1900 e o ano atual.</li>
+            <li>A data de disponibilidade foi escolhida.</li>
+          </ul>
+          <div class="aside-block">
+            <p>
+              Depois de guardar, o formulário é limpo e o registo fica
+              disponível nas outras páginas.
+            </p>
+          </div>
+        </aside>
       </section>
     </main>
 
