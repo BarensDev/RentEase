@@ -2,9 +2,38 @@
 
 const STORAGE_KEY = "renteaseFlats";
 let storageMessage = "";
-/*const STORAGE_TEST_VALUE =
-  '{"data":[{"city":"Olhão","streetName":"Rua da Igreja","streetNumber":2,"areaSize":100,"hasAC":false,"yearBuilt":1920,"rentPrice":900,"dateAvailable":"2026-10-01","isFavorite":false,"id":1788391492486}],"errors":{}}';
-*/
+const EXEMPLE_DATA = [
+  {
+    areaSize: 100,
+    city: "Beja",
+    dateAvailable: "2027-01-01",
+    hasAC: false,
+    rentPrice: 850,
+    streetName: "Rua do Alentejano",
+    streetNumber: 77,
+    yearBuilt: 2026,
+  },
+  {
+    areaSize: 33,
+    city: "Portimão",
+    dateAvailable: "2027-05-01",
+    hasAC: true,
+    rentPrice: 525,
+    streetName: "Av. da Escola da Sardinha",
+    streetNumber: 66,
+    yearBuilt: 2001,
+  },
+  {
+    areaSize: 250,
+    city: "Moncarapacho",
+    dateAvailable: "2027-02-01",
+    hasAC: false,
+    rentPrice: 1800,
+    streetName: "Av. Rei de Moncarapacho",
+    streetNumber: 3,
+    yearBuilt: 2020,
+  },
+];
 
 function loadFlats() {
   storageMessage = "";
