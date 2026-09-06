@@ -45,6 +45,27 @@ a {
   -webkit-tap-highlight-color: transparent;
 }
 
+/*Modal CSS*/
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.hidden {
+  display: none;
+}
+
 :focus-visible {
   outline: 3px solid #f59e0b;
   outline-offset: 3px;
@@ -137,6 +158,11 @@ a {
 .button--secondary {
   color: var(--color-primary-dark);
   background: white;
+}
+
+.button--secondary:hover {
+  color: white;
+  background: var(--color-primary-dark);
 }
 
 .button--small {
@@ -363,6 +389,7 @@ button#clearFiltersButton {
   align-items: start;
   justify-content: space-between;
   gap: 1rem;
+  margin-bottom: 0.8rem;
 }
 
 .property-card__address,
@@ -372,10 +399,38 @@ button#clearFiltersButton {
 }
 
 /* TODO CSS-4: organiza os dados de cada cartão e destaca nome e valor. */
+/*
 .property-card__facts,
 .property-card__fact,
 .property-card__fact-label,
 .property-card__fact-value {
+}
+*/
+.property-card__facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(3, auto);
+  gap: 1rem;
+}
+
+.property-card__fact {
+  padding: 1rem 0.4rem;
+  border-radius: 1rem;
+  background-color: var(--color-page);
+}
+
+.property-card__fact-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #687386;
+  margin: 0;
+}
+
+.property-card__fact-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #172033;
+  margin: 0;
 }
 
 .badge {
@@ -385,6 +440,10 @@ button#clearFiltersButton {
   border-radius: 999px;
   font-size: 0.8rem;
   font-weight: 900;
+}
+.fav-border {
+  border: 1px solid #9a6700;
+  box-shadow: 0 0 10px #9a6700;
 }
 
 /* DONE TODO CSS-5: estiliza o footer que acrescentaste às três páginas. */

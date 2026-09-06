@@ -7,10 +7,13 @@ const maxPriceFilter = document.getElementById("maxPriceFilter");
 const minAreaFilter = document.getElementById("minAreaFilter");
 const maxAreaFilter = document.getElementById("maxAreaFilter");
 const sortBy = document.getElementById("sortBy");
+const sortDirection = document.getElementById("sortDirection");
 const clearFiltersButton = document.getElementById("clearFiltersButton");
 const resultsCount = document.getElementById("resultsCount");
 const flatsFeedback = document.getElementById("flatsFeedback");
 const flatList = document.getElementById("flatList");
+const modal = document.getElementById("delete-modal");
+let flatIdToDelete = null;
 
 function showFlatsFeedback(message, type = "success") {
   flatsFeedback.hidden = message === "";
@@ -45,24 +48,60 @@ function getProcessedFlats() {
     };
   }
 
-  /*
-   * TODO JS-FLATS-1
-   * Usa filter() sobre allFlats.
-   * Um filtro vazio não deve excluir apartamentos.
-   * Os cinco filtros devem funcionar em conjunto.
-   * As variáveis city, minPrice, maxPrice, minArea e maxArea já estão preparadas.
-   */
-  const filteredFlats = allFlats.data;
+  const filteredFlats = allFlats.data.filter((flat) => {
+    // Se Variavel estiver empty a condição passa a verdade
+    const cityMatch = !city || flat.city.toLowerCase().includes(city);
+
+    const minRentMatch = !minPrice || flat.rentPrice >= minPrice;
+
+    const maxRentMatch = !maxPrice || flat.rentPrice <= maxPrice;
+
+    const minAreaMatch = !minArea || flat.areaSize >= minArea;
+
+    const maxAreaMatch = !maxArea || flat.areaSize <= maxArea;
+
+    return (
+      cityMatch && minRentMatch && maxRentMatch && minAreaMatch && maxAreaMatch
+    );
+  });
 
   // Esta cópia evita ordenar directamente o array carregado.
-  const sortedFlats = [...filteredFlats];
+  let sortedFlats = [...filteredFlats];
 
-  /*
-   * TODO JS-FLATS-2
-   * Ordena sortedFlats de acordo com sortBy.value:
-   * city, price ou area. Se o valor for none, conserva a ordem.
-   */
+  switch (sortBy.value) {
+    case "city":
+      sortedFlats.sort((a, b) => {
+        return sortDirection.value === "asc"
+          ? a.city.localeCompare(b.city)
+          : b.city.localeCompare(a.city);
+      });
 
+      break;
+    case "price":
+      sortedFlats.sort((a, b) => {
+        return sortDirection.value === "asc"
+          ? a.rentPrice - b.rentPrice
+          : b.rentPrice - a.rentPrice;
+      });
+
+      break;
+    case "area":
+      sortedFlats.sort((a, b) => {
+        //console.log(a);
+        //console.log(b);
+        return sortDirection.value === "asc"
+          ? a.areaSize - b.areaSize
+          : b.areaSize - a.areaSize;
+      });
+
+      break;
+    case "none":
+      sortedFlats.sort((a, b) => {
+        return sortDirection.value === "asc" ? a.id - b.id : b.id - a.id;
+      });
+      break;
+  }
+  //console.log(sortedFlats);
   return { flats: sortedFlats, error: "" };
 }
 
@@ -98,23 +137,34 @@ function createFlatCard(flat) {
   address.className = "property-card__address";
   address.textContent = `${flat.streetName}, ${flat.streetNumber}`;
 
+  const idElm = document.createElement("p");
+  idElm.className = "property-card__id";
+  idElm.textContent = `Id: ${flat.id}`;
+
   headingGroup.appendChild(title);
   headingGroup.appendChild(address);
+  headingGroup.appendChild(idElm);
   header.appendChild(headingGroup);
 
-  if (flat.isFavourite) {
+  if (flat.isFavorite) {
     const badge = document.createElement("span");
     badge.className = "badge";
     badge.textContent = "Favorito";
     header.appendChild(badge);
+    card.className = "property-card fav-border";
   }
 
   const facts = document.createElement("div");
   facts.className = "property-card__facts";
   facts.appendChild(createFact("Renda", formatCurrency(flat.rentPrice)));
   facts.appendChild(createFact("Área", `${flat.areaSize} m²`));
-
-  // TODO JS-FLATS-3: acrescenta ano, ar condicionado e disponibilidade.
+  facts.appendChild(createFact("Ano", `${flat.yearBuilt}`));
+  facts.appendChild(
+    createFact("Ar condicionado", `${flat.hasAC ? "Sim" : "Não"}`),
+  );
+  facts.appendChild(
+    createFact("Disponibilidade a partir de", formatDate(flat.dateAvailable)),
+  );
 
   const actions = document.createElement("div");
   actions.className = "property-card__actions";
@@ -122,7 +172,8 @@ function createFlatCard(flat) {
   const favouriteButton = document.createElement("button");
   favouriteButton.className = "button button--secondary button--small";
   favouriteButton.type = "button";
-  favouriteButton.textContent = flat.isFavourite
+  favouriteButton.id = `fav-button_${flat.id}`;
+  favouriteButton.textContent = flat.isFavorite
     ? "Remover dos favoritos"
     : "Marcar como favorito";
   favouriteButton.addEventListener("click", () => toggleFavourite(flat.id));
@@ -131,7 +182,10 @@ function createFlatCard(flat) {
   deleteButton.className = "button button--danger button--small";
   deleteButton.type = "button";
   deleteButton.textContent = "Eliminar";
-  deleteButton.addEventListener("click", () => deleteFlat(flat.id));
+  deleteButton.addEventListener("click", () => {
+    modal.classList.remove("hidden");
+    flatIdToDelete = flat.id;
+  });
 
   actions.appendChild(favouriteButton);
   actions.appendChild(deleteButton);
@@ -167,34 +221,81 @@ function renderFlats(actionMessage = "", actionType = "success") {
 }
 
 function toggleFavourite(flatId) {
-  /*
-   * TODO JS-FLATS-4
-   * 1. Carrega o array completo.
-   * 2. Alterna isFavourite apenas no apartamento com flatId.
-   * 3. Guarda o array completo.
-   * 4. Volta a renderizar.
-   */
-
-  showFlatsFeedback(
-    `Falta implementar a alteração do favorito ${flatId}.`,
-    "warning",
-  );
+  let isFav = Boolean;
+  try {
+    const flats = loadFlats();
+    const UpdatedFlats = { data: [...flats.data], errors: { ...flats.errors } };
+    UpdatedFlats.data.forEach((flat) => {
+      if (flat.id === flatId) {
+        //console.log(flat.isFavorite);
+        flat.isFavorite = !flat.isFavorite;
+        isFav = flat.isFavorite;
+        if (isFav) {
+          //adicionar class de favorito
+        } else {
+          //retirar class favorito
+        }
+      }
+    });
+    saveFlats(UpdatedFlats);
+  } catch (error) {
+    showFlatsFeedback(
+      `Something went while adding flat with id:${flatId} to the favorites.`,
+      "error",
+    );
+  }
+  //console.log(isFav);
+  isFav
+    ? showFlatsFeedback(
+        `Flats with id:${flatId} Added to the Favorites Successfully.`,
+        "success",
+      )
+    : showFlatsFeedback(
+        `Flats with id:${flatId} removed from the Favorites Successfully.`,
+        "warning",
+      );
+  renderFlats();
 }
 
 function deleteFlat(flatId) {
-  /*
-   * TODO JS-FLATS-5
-   * 1. Pede confirmação ao utilizador.
-   * 2. Usa filter() para criar um array sem o apartamento escolhido.
-   * 3. Guarda o novo array.
-   * 4. Volta a renderizar.
-   */
+  try {
+    const flats = loadFlats();
+    let flatsCopy = { data: [...flats.data], errors: { ...flats.errors } };
+    console.log(flatsCopy);
+    const updatedFlats = flatsCopy.data.filter((flat) => flat.id !== flatId);
+    console.log(updatedFlats);
 
-  showFlatsFeedback(
-    `Falta implementar a eliminação do apartamento ${flatId}.`,
-    "warning",
-  );
+    flatsCopy.data = updatedFlats;
+
+    console.log(flatsCopy);
+    const isSaved = saveFlats(flatsCopy);
+    if (isSaved) {
+      showFlatsFeedback(
+        `O apartamento com id: ${flatId}, foi eliminado com successo.`,
+        "success",
+      );
+    } else {
+      showFlatsFeedback(
+        `O apartamento com id: ${flatId}, foi eliminado com successo.`,
+        "warning",
+      );
+    }
+    document.getElementById("delete-modal").classList.add("hidden");
+  } catch (error) {
+    throw new Error(error);
+  }
+  flatIdToDelete = null;
+  renderFlats();
 }
+
+document.getElementById("confirm-delete").addEventListener("click", (event) => {
+  deleteFlat(flatIdToDelete);
+});
+
+document.getElementById("cancel-delete").addEventListener("click", () => {
+  modal.classList.add("hidden");
+  flatIdToDelete = null;
+});
 
 filtersForm.addEventListener("input", () => renderFlats());
 filtersForm.addEventListener("change", () => renderFlats());
