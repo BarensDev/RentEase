@@ -239,6 +239,40 @@ h3 {
   padding-block: 2.5rem;
 }
 
+.content-section:has(form#newFlatForm) {
+  display: grid;
+  grid-template-columns: 9fr 3fr;
+  grid-template-rows: auto;
+  gap: 1rem;
+}
+/*ASIDE*/
+aside {
+  align-self: self-start;
+}
+aside .section-heading {
+  font-size: 0.8rem;
+}
+aside .eyebrow {
+  font-size: 0.7rem;
+}
+.aside-list li::marker {
+  color: var(--color-primary-dark);
+}
+.aside-list {
+  font-size: 0.9rem;
+  padding-left: 12px;
+}
+
+.aside-block {
+  background-color: var(--color-page);
+  color: var(--color-muted);
+  padding: 0.1rem 0.05rem;
+  font-size: 0.8rem;
+}
+.aside-block p {
+  padding-left: 0.5rem;
+}
+
 .section-heading {
   margin-bottom: 1rem;
 }
@@ -281,7 +315,7 @@ button#clearFiltersButton {
   grid-area: 1 / 2 / 3 / 3;
   justify-self: end;
 }
-
+/*HOME STATS*/
 .stats-grid,
 .property-grid {
   display: grid;
@@ -325,7 +359,7 @@ button#clearFiltersButton {
   font-size: 2.4rem;
 }
 
-/* TODO CSS-2: cria grelhas para os campos de filtros e do formulário. */
+/*GRIDS */
 .filters-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -379,6 +413,7 @@ button#clearFiltersButton {
   margin: 0;
 }
 
+/*ERRORS AND FEEDBACK*/
 /* A validação fornecida aplica esta classe aos campos inválidos. */
 .field input.input-error {
   border-color: var(--color-danger);
@@ -419,7 +454,7 @@ button#clearFiltersButton {
   background: #fff8e1;
   border-left-color: var(--color-warning);
 }
-
+/*CARD HEADER*/
 .property-card__header {
   display: flex;
   align-items: start;
@@ -434,7 +469,6 @@ button#clearFiltersButton {
   color: var(--color-muted);
 }
 
-/* TODO CSS-4: organiza os dados de cada cartão e destaca nome e valor. */
 /*
 .property-card__facts,
 .property-card__fact,
@@ -468,7 +502,7 @@ button#clearFiltersButton {
   color: #172033;
   margin: 0;
 }
-
+/*BADGES*/
 .badge {
   padding: 0.3rem 0.55rem;
   color: #9a4b00;
@@ -491,7 +525,7 @@ button#clearFiltersButton {
   box-shadow: 0 0 10px #9a6700;
 }
 
-/* DONE TODO CSS-5: estiliza o footer que acrescentaste às três páginas. */
+/*FOOTER*/
 .site-footer {
   height: 5rem;
   color: #e0f2fe;

@@ -169,6 +169,15 @@ function createFlatCard(flat) {
   const actions = document.createElement("div");
   actions.className = "property-card__actions";
 
+  const editButton = document.createElement("button");
+  editButton.className = "button button--secondary button--small";
+  editButton.type = "button";
+  editButton.textContent = "Editar";
+  editButton.addEventListener(
+    "click",
+    () => (window.location.href = `./new-flat.html?id=${flat.id}`),
+  );
+
   const favouriteButton = document.createElement("button");
   favouriteButton.className = "button button--secondary button--small";
   favouriteButton.type = "button";
@@ -187,6 +196,7 @@ function createFlatCard(flat) {
     flatIdToDelete = flat.id;
   });
 
+  actions.appendChild(editButton);
   actions.appendChild(favouriteButton);
   actions.appendChild(deleteButton);
   card.appendChild(header);
