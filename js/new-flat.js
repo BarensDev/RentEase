@@ -10,9 +10,13 @@ const formFeedback = document.getElementById("formFeedback");
 const formFeedbackText = document.getElementById("formFeedbackText");
 const viewFlatsLink = document.getElementById("viewFlatsLink");
 const currentYear = new Date().getFullYear();
-
+const buttonExemples = document.getElementById("btnExamples");
+let counter = 0;
 yearBuiltInput.max = currentYear;
 id ? pageTitle.classList.add("hidden") : pageTitle.classList.remove("hidden");
+id
+  ? buttonExemples.classList.add("hidden")
+  : buttonExemples.classList.remove("hidden");
 
 function showFormFeedback(message, type = "success", showLink = false) {
   formFeedback.hidden = message === "";
@@ -210,15 +214,31 @@ newFlatForm.addEventListener("submit", (event) => {
   }
 });
 
+buttonExemples.addEventListener("click", () => {
+  const flat = EXEMPLE_DATA[counter];
+  if (counter === 2) {
+    counter = 0;
+  } else {
+    counter++;
+  }
+  console.log(flat);
+  document.getElementById("city").value = flat.city;
+  document.getElementById("streetName").value = flat.streetName;
+  document.getElementById("streetNumber").value = flat.streetNumber;
+  document.getElementById("areaSize").value = flat.areaSize;
+  document.getElementById("yearBuilt").value = flat.yearBuilt;
+  document.getElementById("rentPrice").value = flat.rentPrice;
+  document.getElementById("dateAvailable").value = flat.dateAvailable;
+  document.getElementById("hasAC").checked = flat.hasAC;
+});
+
 function renderNewFlat() {
   if (id) {
     const allFlats = loadFlats();
     const flats = [...allFlats.data];
-    console.log(flats);
 
     const flatFiltered = flats.filter((flat) => flat.id == id);
     let flat = flatFiltered[0];
-    console.log(flat);
     document.getElementById("city").value = flat.city;
     document.getElementById("streetName").value = flat.streetName;
     document.getElementById("streetNumber").value = flat.streetNumber;

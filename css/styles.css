@@ -62,10 +62,6 @@ a {
   border-radius: 8px;
 }
 
-.hidden {
-  display: none;
-}
-
 :focus-visible {
   outline: 3px solid #f59e0b;
   outline-offset: 3px;
@@ -545,6 +541,78 @@ button#clearFiltersButton {
   justify-self: space-between;
 }
 
-/* TODO CSS-6: acrescenta regras específicas para ecrãs até 700px. */
+.hidden {
+  display: none;
+}
+
 @media (max-width: 700px) {
+  .property-card__fact-value {
+    font-size: 1.1rem;
+  }
+
+  nav {
+    flex-direction: column;
+  }
+  .brand {
+    align-self: flex-start;
+  }
+  .nav__links {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .nav__links > a {
+    width: calc(50% - 5px);
+  }
+
+  .nav__links > a:nth-child(3) {
+    width: 100%;
+  }
+
+  .hero-actions,
+  .form-actions,
+  .property-card__actions {
+    flex-direction: column;
+    align-items: start;
+  }
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .stats-grid,
+  .property-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filters-grid {
+    grid-template-columns: 1fr;
+  }
+  .filters-grid .field {
+    grid-column: span 2;
+  }
+
+  .content-section:has(form#newFlatForm) {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .field {
+    grid-column: span 2;
+  }
+  aside {
+    display: none;
+  }
+  .site-footer {
+    height: auto;
+    font-size: 0.8rem;
+  }
+  .footer-container {
+    margin: 0 0.5rem;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    justify-items: center;
+  }
 }
