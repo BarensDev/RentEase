@@ -4,6 +4,9 @@ const totalFlatsCount = document.getElementById("totalFlatsCount");
 const favouriteFlatsCount = document.getElementById("favouriteFlatsCount");
 const favouriteList = document.getElementById("favouriteList");
 const homeFeedback = document.getElementById("homeFeedback");
+const rendaMed = document.getElementById("rendaMedia");
+const cityApartList = document.getElementById("cityApartList");
+const numApartList = document.getElementById("numApartList");
 
 function showHomeFeedback(message, type = "success") {
   homeFeedback.hidden = message === "";
@@ -79,8 +82,11 @@ function createFavouriteCard(flat) {
 
 function renderHome(actionMessage = "") {
   const flats = loadFlats();
-
   totalFlatsCount.textContent = flats.data.length;
+
+  rendaMed.textContent = formatCurrency(calcRendaMed(flats.data));
+
+  createListItems(flats.data);
 
   const favouriteFlats = flats.data.filter((flat) => flat.isFavorite);
   let favouriteFlatsCards = [];
@@ -89,10 +95,11 @@ function renderHome(actionMessage = "") {
     favouriteFlatsCards.push(favCard);
   }
 
-  console.log(favouriteFlatsCards);
-
   favouriteFlatsCount.textContent = favouriteFlats.length;
   favouriteList.replaceChildren(...favouriteFlatsCards);
+
+  for (const flat of flats.data) {
+  }
 
   const message = actionMessage || getStorageMessage();
 
@@ -106,13 +113,6 @@ function renderHome(actionMessage = "") {
 }
 
 function removeFavourite(flatId) {
-  /*
-   * TODO JS-HOME-4
-   * 1. Carrega o array completo.
-   * 2. Usa map() para mudar apenas isFavourite do apartamento escolhido.
-   * 3. Guarda o array actualizado.
-   * 4. Volta a chamar renderHome() com uma mensagem de sucesso.
-   */
   const flats = loadFlats();
 
   flats.data.map((flat) => {
@@ -136,4 +136,37 @@ function removeFavourite(flatId) {
       );
 }
 
+function calcRendaMed(flats) {
+  let media = 0;
+  for (const flat of flats) {
+    media += flat.rentPrice;
+  }
+  return media / flats.length;
+}
+
+function createListItems(flats) {
+  const flatsPerCity = Object.entries(
+    flats.reduce((acc, flat) => {
+      const city = normalizeStrings(flat.city);
+      acc[city] = (acc[city] || 0) + 1;
+      return acc;
+    }, {}),
+  ).map(([city, count]) => ({
+    city,
+    count,
+  }));
+
+  console.log(flatsPerCity);
+  for (const item of flatsPerCity) {
+    const p = document.createElement("p");
+    p.classList.add("eyebrow");
+    p.innerHTML = `<strong>${item.city}</strong> tem <strong>${item.count}</strong> apartamento${item.count == 1 ? "" : "s"}`;
+    cityApartList.appendChild(p);
+  }
+  console.log(flatsPerCity);
+  /*
+  address.className = "property-card__address";
+  address.textContent = `${flat.streetName}, ${flat.streetNumber}`;
+*/
+}
 renderHome();

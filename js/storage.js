@@ -81,3 +81,11 @@ function formatDate(dateText) {
 
   return `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
 }
+
+function normalizeStrings(str) {
+  return str
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
