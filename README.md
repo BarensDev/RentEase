@@ -117,6 +117,5 @@ Após o envio, o apartamento é guardado automaticamente no armazenamento local 
 ## Autor
 
 Pedro Barão
-João Rosado (starter Project)
 
-Postgraduate Program in Software Development - TechOf
+João Rosado (starter Project)
