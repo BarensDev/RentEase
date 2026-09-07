@@ -169,6 +169,7 @@ newFlatForm.addEventListener("submit", (event) => {
 
   let oldFlats = loadFlats();
   let editedFlats = [];
+  let newFlat = {};
   if (id) {
     editedFlats = oldFlats.data.map((flat) => {
       if (flat.id === id) {
@@ -181,7 +182,7 @@ newFlatForm.addEventListener("submit", (event) => {
       return flat;
     });
   } else {
-    let newFlat = {
+    newFlat = {
       ...validationResult.data,
       isFavorite: false,
       id: Date.now(),

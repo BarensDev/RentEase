@@ -545,6 +545,13 @@ button#clearFiltersButton {
   display: none;
 }
 
+#cityApartList {
+  grid-area: 2 / 1 / 3 / 3;
+  font-size: 1.2rem;
+}
+.eyebrow strong {
+  font-size: 1.3rem;
+}
 @media (max-width: 700px) {
   .property-card__fact-value {
     font-size: 1.1rem;
