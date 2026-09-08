@@ -95,8 +95,8 @@ function getProcessedFlats() {
     case "city":
       sortedFlats.sort((a, b) => {
         return sortDirection.value === "asc"
-          ? a.city.localeCompare(b.city)
-          : b.city.localeCompare(a.city);
+          ? normalizeStrings(a.city).localeCompare(normalizeStrings(b.city))
+          : normalizeStrings(b.city).localeCompare(normalizeStrings(a.city));
       });
 
       break;
