@@ -1,7 +1,18 @@
 "use strict";
 
+/**
+* Controller for the crate and edit flat form.
+
+* Models selected through the URL:
+* - o valid id parameter: create a newflat.
+* - Valid id parameter: load and update the matching flat.
+
+*/
+
 const params = new URLSearchParams(window.location.search);
-const id = Number(params.get("id"));
+// A finite posiive ID selects edit mode. Missing,malformed, or non-positive valus leave the page in create mode.
+const requestedId = Number(params.get("id"));
+const isEditMode = Numer.isFinite(requestedId) && requestedId > 0;
 
 const pageTitle = document.getElementById("page-title");
 const newFlatForm = document.getElementById("newFlatForm");
@@ -13,8 +24,10 @@ const currentYear = new Date().getFullYear();
 const buttonExemples = document.getElementById("btnExamples");
 let counter = 0;
 yearBuiltInput.max = currentYear;
-id ? pageTitle.classList.add("hidden") : pageTitle.classList.remove("hidden");
-id
+isEditMode
+  ? pageTitle.classList.add("hidden")
+  : pageTitle.classList.remove("hidden");
+isEditMode
   ? buttonExemples.classList.add("hidden")
   : buttonExemples.classList.remove("hidden");
 
@@ -54,6 +67,14 @@ function isValidDateText(dateText) {
   );
 }
 
+/**
+* Reads, normalizes, and validates all form fields n one pass.
+
+* The returned data object contains typed values read for persistence.
+* Validation erors are keyed by field name so the* map directly to the
+* correspond*ng input and error element.
+*
+*/
 function validateForm() {
   const city = newFlatForm.elements.city.value.trim();
   const streetName = newFlatForm.elements.streetName.value.trim();
@@ -154,7 +175,6 @@ newFlatForm.addEventListener("submit", (event) => {
 
   const validationResult = validateForm();
   showValidationErrors(validationResult.errors);
-  //console.log(validationResult);
   const hasErrors = Object.values(validationResult.errors).some(
     (message) => message !== "",
   );
@@ -170,13 +190,13 @@ newFlatForm.addEventListener("submit", (event) => {
   let oldFlats = loadFlats();
   let editedFlats = [];
   let newFlat = {};
-  if (id) {
+  if (isEditMode) {
     editedFlats = oldFlats.data.map((flat) => {
-      if (flat.id === id) {
+      if (flat.id === requestedId) {
         return (flat = {
           ...validationResult.data,
           isFavorite: flat.isFavorite,
-          id: id,
+          id: requestedId,
         });
       }
       return flat;
@@ -189,7 +209,9 @@ newFlatForm.addEventListener("submit", (event) => {
     };
   }
 
-  const flatsContent = id ? [...editedFlats] : [...oldFlats.data, newFlat];
+  const flatsContent = isEditMode
+    ? [...editedFlats]
+    : [...oldFlats.data, newFlat];
   const flats = {
     data: [...flatsContent],
     errors: { ...oldFlats.errors },
@@ -199,14 +221,11 @@ newFlatForm.addEventListener("submit", (event) => {
 
   if (isSaved) {
     clearForm;
-    if (id) {
+    if (isEditMode) {
       window.location.href = "./flats.html";
       return;
     }
-    showFormFeedback(
-      "Os dados são válidos. Completa o TODO JS-NEW-1 para guardar o apartamento.",
-      "success",
-    );
+    showFormFeedback("O apartamento foi guardado com sucesso.", "success");
   } else {
     showFormFeedback(
       "Os dados são válidos.Algo correu mal ao guardar os dados.",
@@ -215,6 +234,8 @@ newFlatForm.addEventListener("submit", (event) => {
   }
 });
 
+// Cycle through predefined examles and populate the form only.
+// The example is persisted only if te user submits the form successful*y.
 buttonExemples.addEventListener("click", () => {
   const flat = EXEMPLE_DATA[counter];
   if (counter === 2) {
@@ -233,12 +254,18 @@ buttonExemples.addEventListener("click", () => {
   document.getElementById("hasAC").checked = flat.hasAC;
 });
 
+/**
+* Populates the form with the requested flat when the pge is in edit mode.
+
+* A missing record must be handled as an invaid edit request rather than
+* attmpting to read properties from und*fined.
+*/
 function renderNewFlat() {
-  if (id) {
+  if (requestedId) {
     const allFlats = loadFlats();
     const flats = [...allFlats.data];
 
-    const flatFiltered = flats.filter((flat) => flat.id == id);
+    const flatFiltered = flats.filter((flat) => flat.id == requestedId);
     let flat = flatFiltered[0];
     document.getElementById("city").value = flat.city;
     document.getElementById("streetName").value = flat.streetName;

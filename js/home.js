@@ -1,12 +1,19 @@
 "use strict";
 
+/**
+ * Controller for the RentEase summary page.
+ *
+ * The page derives all statistics and favorite cards from the saved flat
+ * collection. Summary values are not stored separately.
+ *
+ */
+
 const totalFlatsCount = document.getElementById("totalFlatsCount");
 const favouriteFlatsCount = document.getElementById("favouriteFlatsCount");
 const favouriteList = document.getElementById("favouriteList");
 const homeFeedback = document.getElementById("homeFeedback");
 const rendaMed = document.getElementById("rendaMedia");
 const cityApartList = document.getElementById("cityApartList");
-const numApartList = document.getElementById("numApartList");
 
 function showHomeFeedback(message, type = "success") {
   homeFeedback.hidden = message === "";
@@ -14,7 +21,6 @@ function showHomeFeedback(message, type = "success") {
   homeFeedback.dataset.type = type;
 }
 
-/* Exemplo: cada nome/valor é criado com elementos e textContent. */
 function createFact(label, value) {
   const fact = document.createElement("div");
   fact.className = "property-card__fact";
@@ -80,6 +86,13 @@ function createFavouriteCard(flat) {
   return card;
 }
 
+/**
+ * Recomputes and renders dashboard statistics and favorite cards from storage.
+ *
+ * Recalculation on every render keeps totals, average rent, city counts, and
+ * favorite state synchronized with the persisted flat collection.
+ *
+ */
 function renderHome(actionMessage = "") {
   const flats = loadFlats();
   totalFlatsCount.textContent = flats.data.length;
@@ -114,16 +127,16 @@ function renderHome(actionMessage = "") {
 
 function removeFavourite(flatId) {
   const flats = loadFlats();
+  let flatsCopy = { data: [...flats.data], errors: { ...flats.errors } };
 
-  flats.data.map((flat) => {
+  flatsCopy.data.map((flat) => {
     if (flat.id === flatId) {
       flat.isFavorite = false;
     }
     return flat;
   });
 
-  const isSaved = saveFlats(flats);
-  renderHome();
+  const isSaved = saveFlats(flatsCopy);
 
   isSaved
     ? showHomeFeedback(
@@ -134,16 +147,28 @@ function removeFavourite(flatId) {
         "Erro ao remover o Apartamento dos Favoritos...",
         "warning",
       );
+  renderHome();
 }
 
 function calcRendaMed(flats) {
   let media = 0;
+  if (flats.length === 0) {
+    return 0;
+  }
   for (const flat of flats) {
     media += flat.rentPrice;
   }
   return media / flats.length;
 }
 
+/**
+ * Groups flats by a case-insensitive and accent-insensitive city key, then
+ * renders one count per city.
+ *
+ * The list is cleared before rebuilding so repeated renders do not duplicate
+ * city entries.
+ *
+ */
 function createListItems(flats) {
   const flatsPerCity = Object.entries(
     flats.reduce((acc, flat) => {
@@ -156,17 +181,11 @@ function createListItems(flats) {
     count,
   }));
 
-  console.log(flatsPerCity);
   for (const item of flatsPerCity) {
     const p = document.createElement("p");
     p.classList.add("eyebrow");
     p.innerHTML = `<strong>${item.city}</strong> tem <strong>${item.count}</strong> apartamento${item.count == 1 ? "" : "s"}`;
     cityApartList.appendChild(p);
   }
-  console.log(flatsPerCity);
-  /*
-  address.className = "property-card__address";
-  address.textContent = `${flat.streetName}, ${flat.streetNumber}`;
-*/
 }
 renderHome();
