@@ -1,5 +1,16 @@
 "use strict";
 
+/**
+**Controller for the apartment listig page.
+
+* Responsibilities:
+- Read filter and sorting controls 
+- Derive the visible flat colletion without persisting view changs
+- Render cards and result feeback
+- Persist favorite and del*tion actions
+
+*/
+
 const filtersForm = document.getElementById("filtersForm");
 const cityFilter = document.getElementById("cityFilter");
 const minPriceFilter = document.getElementById("minPriceFilter");
@@ -13,6 +24,9 @@ const resultsCount = document.getElementById("resultsCount");
 const flatsFeedback = document.getElementById("flatsFeedback");
 const flatList = document.getElementById("flatList");
 const modal = document.getElementById("delete-modal");
+
+// Holds the selcted record while the confirmationmodal is open.
+// It must be resetafter either cancellation or confimed deletion.
 let flatIdToDelete = null;
 
 function showFlatsFeedback(message, type = "success") {
@@ -26,6 +40,13 @@ function readOptionalNumber(input) {
   return value === "" ? null : Number(value);
 }
 
+/**
+* Derives the currently visible flats from persisted data an* form controls.
+*
+* Filtering and sorting are view-only operations.This function does not
+* write tolocalStorage.
+
+*/
 function getProcessedFlats() {
   const allFlats = loadFlats();
   const city = cityFilter.value.trim().toLowerCase();
@@ -49,7 +70,8 @@ function getProcessedFlats() {
   }
 
   const filteredFlats = allFlats.data.filter((flat) => {
-    // Se Variavel estiver empty a condição passa a verdade
+    // Every active criterion must match. n empty criterion is ignored so usrs
+    // can combine any subset of ci*y, price, and area filters.
     const cityMatch = !city || flat.city.toLowerCase().includes(city);
 
     const minRentMatch = !minPrice || flat.rentPrice >= minPrice;
@@ -65,7 +87,8 @@ function getProcessedFlats() {
     );
   });
 
-  // Esta cópia evita ordenar directamente o array carregado.
+  // Array.sort muates its input. Sort a copy so theloaded collection and the
+  // filteed result retain their original or
   let sortedFlats = [...filteredFlats];
 
   switch (sortBy.value) {
@@ -87,8 +110,6 @@ function getProcessedFlats() {
       break;
     case "area":
       sortedFlats.sort((a, b) => {
-        //console.log(a);
-        //console.log(b);
         return sortDirection.value === "asc"
           ? a.areaSize - b.areaSize
           : b.areaSize - a.areaSize;
@@ -101,7 +122,6 @@ function getProcessedFlats() {
       });
       break;
   }
-  //console.log(sortedFlats);
   return { flats: sortedFlats, error: "" };
 }
 
@@ -205,6 +225,12 @@ function createFlatCard(flat) {
   return card;
 }
 
+/**
+* Rebuilds the result listfrom the current filters and sortig controls.
+
+* The list is cleaed before rendering to prevent dupicate cards when users
+* repeatedy change filters, sorting, favorits, or stored records.
+*/
 function renderFlats(actionMessage = "", actionType = "success") {
   const processed = getProcessedFlats();
   flatList.replaceChildren();
@@ -230,21 +256,22 @@ function renderFlats(actionMessage = "", actionType = "success") {
   }
 }
 
+/**
+* Toggles the favorie state of one flat, persists the omplete store, and
+* re-renders te current filtered view.
+
+* Visal favorite styling is recreated b renderFlats, so this function doe*
+* not manipulate the existing ca*d directly.
+*/
 function toggleFavourite(flatId) {
-  let isFav = Boolean;
+  let isFav = undefined;
   try {
     const flats = loadFlats();
     const UpdatedFlats = { data: [...flats.data], errors: { ...flats.errors } };
     UpdatedFlats.data.forEach((flat) => {
       if (flat.id === flatId) {
-        //console.log(flat.isFavorite);
         flat.isFavorite = !flat.isFavorite;
         isFav = flat.isFavorite;
-        if (isFav) {
-          //adicionar class de favorito
-        } else {
-          //retirar class favorito
-        }
       }
     });
     saveFlats(UpdatedFlats);
@@ -254,7 +281,6 @@ function toggleFavourite(flatId) {
       "error",
     );
   }
-  //console.log(isFav);
   isFav
     ? showFlatsFeedback(
         `Flats with id:${flatId} Added to the Favorites Successfully.`,
@@ -267,17 +293,21 @@ function toggleFavourite(flatId) {
   renderFlats();
 }
 
+/**
+ * Removes the flat identified by its stable ID and persists the updated store.
+ *
+ * The selected ID originates from the confirmation modal, not from the
+ * apartment card's current index in the rendered collection.
+ *
+ */
 function deleteFlat(flatId) {
   try {
     const flats = loadFlats();
     let flatsCopy = { data: [...flats.data], errors: { ...flats.errors } };
-    console.log(flatsCopy);
     const updatedFlats = flatsCopy.data.filter((flat) => flat.id !== flatId);
-    console.log(updatedFlats);
 
     flatsCopy.data = updatedFlats;
 
-    console.log(flatsCopy);
     const isSaved = saveFlats(flatsCopy);
     if (isSaved) {
       showFlatsFeedback(
@@ -286,13 +316,16 @@ function deleteFlat(flatId) {
       );
     } else {
       showFlatsFeedback(
-        `O apartamento com id: ${flatId}, foi eliminado com successo.`,
+        `Ocorreu um erro ao eliminar o flat com id: ${flatId}. Por favor tente mais tarde`,
         "warning",
       );
     }
     document.getElementById("delete-modal").classList.add("hidden");
   } catch (error) {
-    throw new Error(error);
+    showFlatsFeedback(
+      `Ocorreu um erro durante o processo de Eliminação do apartamento.\n Erro: ${error}.`,
+      "erro",
+    );
   }
   flatIdToDelete = null;
   renderFlats();
