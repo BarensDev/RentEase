@@ -12,7 +12,7 @@
 const params = new URLSearchParams(window.location.search);
 // A finite posiive ID selects edit mode. Missing,malformed, or non-positive valus leave the page in create mode.
 const requestedId = Number(params.get("id"));
-const isEditMode = Numer.isFinite(requestedId) && requestedId > 0;
+const isEditMode = Number.isFinite(requestedId) && requestedId > 0;
 
 const pageTitle = document.getElementById("page-title");
 const newFlatForm = document.getElementById("newFlatForm");
