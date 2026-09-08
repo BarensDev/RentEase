@@ -72,7 +72,7 @@ function getProcessedFlats() {
   const filteredFlats = allFlats.data.filter((flat) => {
     // Every active criterion must match. n empty criterion is ignored so usrs
     // can combine any subset of ci*y, price, and area filters.
-    const cityMatch = !city || flat.city.toLowerCase().includes(city);
+    const cityMatch = !city || normalizeStrings(flat.city).includes(city);
 
     const minRentMatch = !minPrice || flat.rentPrice >= minPrice;
 
